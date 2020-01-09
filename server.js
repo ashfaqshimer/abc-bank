@@ -19,6 +19,10 @@ dotenv.config({ path: './config/config.env' });
 // Connect to database
 connectDb();
 
+// Route files
+const accounts = require('./routes/accounts');
+const customers = require('./routes/customers');
+
 const app = express();
 
 // Body parser
@@ -39,6 +43,8 @@ app.use(mongoSanitize());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
+app.use('/api/v1/accounts', accounts);
+app.use('/api/v1/customers', customers);
 
 // Error handler
 app.use(errorHandler);
