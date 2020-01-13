@@ -4,10 +4,10 @@ const advancedResults = (model, populate) => async (req, res, next) => {
 
   // Set the fields that needs to be excluded
   const removeFields = ['select', 'sort', 'page', 'limit'];
-  removeFields.forEach((param) => delete reqQuery[param]);
+  removeFields.forEach(param => delete reqQuery[param]);
 
   let queryStr = JSON.stringify(reqQuery);
-  queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, (match) => `$${match}`);
+  queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
   query = model.find(JSON.parse(queryStr)).populate('courses');
 
   // Select Fields
@@ -57,6 +57,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   res.advancedResults = {
     success: true,
     count: results.length,
+    total,
     pagination,
     data: results
   };
