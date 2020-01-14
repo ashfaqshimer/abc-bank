@@ -7,6 +7,15 @@ const Customer = require('../models/Customer');
 // @route   POST /api/v1/accounts
 // @access  Admin
 exports.createAccount = asyncHandler(async (req, res, next) => {
+  // Check if the customer already exists
+  const customer = await Customer.findById(req.body.customer);
+
+  if (!customer) {
+    return next(
+      new ErrorResponse(`Customer ${req.body.customer} does not exist`)
+    );
+  }
+
   const account = await Account.create(req.body);
 
   res.status(201).json({
@@ -35,9 +44,26 @@ exports.getAccounts = asyncHandler(async (req, res, next) => {
 
 // @desc    Get a single account
 // @route   GET /api/v1/accounts/:id
-// @access  Admin
+// @access  Private/Admin
 exports.getAccount = asyncHandler(async (req, res, next) => {
   const account = await Account.findById(req.params.id);
+
+  if (!account) {
+    return next(new ErrorResponse(`Account ${req.params.id} not found`));
+  }
+
+  // Make sure the user is the bootcamp owner
+  if (
+    account.customer.toString() !== req.user.customer &&
+    req.user.role !== 'admin'
+  ) {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to get account ${req.params.id}`,
+        401
+      )
+    );
+  }
 
   res.status(200).json({
     success: true,

@@ -27,6 +27,10 @@ exports.getCustomers = asyncHandler(async (req, res, next) => {
 exports.getCustomer = asyncHandler(async (req, res, next) => {
   const customer = await Customer.findById(req.params.id);
 
+  if (!customer) {
+    return next(new ErrorResponse(`Customer ${req.params.id} does not exist`));
+  }
+
   res.status(201).json({
     success: true,
     data: customer

@@ -10,18 +10,19 @@ const {
 
 const Account = require('../models/Account');
 const advancedResults = require('../middleware/advancedResults');
+const { authorize, protect } = require('../middleware/auth');
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(advancedResults(Account), getAccounts)
-  .post(createAccount);
+  .get(protect, authorize('admin'), advancedResults(Account), getAccounts)
+  .post(protect, authorize('admin'), createAccount);
 
 router
   .route('/:id')
-  .get(getAccount)
-  .put(editAccount)
-  .delete(deleteAccount);
+  .get(protect, getAccount)
+  .put(protect, authorize('admin'), editAccount)
+  .delete(protect, authorize('admin'), deleteAccount);
 
 module.exports = router;
