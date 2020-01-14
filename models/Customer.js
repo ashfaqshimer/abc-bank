@@ -12,7 +12,7 @@ const CustomerSchema = new mongoose.Schema(
     contactNumber: {
       type: String,
       match: [
-        /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g,
+        /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/,
         'Please add a valid contact number'
       ],
       required: true

@@ -6,11 +6,14 @@ const {
   getAccount
 } = require('../controllers/accounts');
 
+const Account = require('../models/Account');
+const advancedResults = require('../middleware/advancedResults');
+
 const router = express.Router();
 
 router
   .route('/')
-  .get(getAccounts)
+  .get(advancedResults(Account), getAccounts)
   .post(createAccount);
 
 router.route('/:id').get(getAccount);

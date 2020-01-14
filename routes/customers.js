@@ -11,7 +11,13 @@ const {
 const Customer = require('../models/Customer');
 const advancedResults = require('../middleware/advancedResults');
 
+// Include other routers
+const accountsRouter = require('./accounts');
+
 const router = express.Router();
+
+// Reroute to other routes
+router.use('/:customerId/accounts', accountsRouter);
 
 router
   .route('/')
