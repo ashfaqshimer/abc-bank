@@ -2,11 +2,13 @@ const ErrorResponse = require('../utils/ErrorResponse');
 
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
+  let errors;
 
   error.message = err.message;
 
   // Log to console for dev
   console.error(err.stack.red);
+  console.error(err);
 
   // Mongoose bad ObjectId
   if (err.name === 'CastError') {
@@ -17,7 +19,8 @@ const errorHandler = (err, req, res, next) => {
   // Mongoose duplicate key
   if (err.code === 11000) {
     const message = `Duplicate field value entered`;
-    error = new ErrorResponse(message, 400);
+    errors = error.keyValue;
+    error = new ErrorResponse(message, 409);
   }
 
   // Mongoose validation error
@@ -26,10 +29,12 @@ const errorHandler = (err, req, res, next) => {
     error = new ErrorResponse(message, 400);
   }
 
-  res.status(error.statusCode || 500).json({
-    success: false,
-    error: error.message || 'Server Error'
-  });
+  const response = { success: false, error: error.message || 'Server Error' };
+  if (errors) {
+    response.errors = errors;
+  }
+
+  res.status(error.statusCode || 500).json(response);
 };
 
 module.exports = errorHandler;

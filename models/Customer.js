@@ -29,6 +29,10 @@ const CustomerSchema = new mongoose.Schema(
       type: String,
       required: [true, 'NIC number is required'],
       unique: true
+    },
+    userCreated: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }

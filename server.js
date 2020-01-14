@@ -22,6 +22,7 @@ connectDb();
 // Route files
 const accounts = require('./routes/accounts');
 const customers = require('./routes/customers');
+const auth = require('./routes/auth');
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Mount routers
 app.use('/api/v1/accounts', accounts);
 app.use('/api/v1/customers', customers);
+app.use('/api/v1/auth', auth);
 
 // Error handler
 app.use(errorHandler);
