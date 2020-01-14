@@ -3,7 +3,9 @@ const express = require('express');
 const {
   createAccount,
   getAccounts,
-  getAccount
+  getAccount,
+  editAccount,
+  deleteAccount
 } = require('../controllers/accounts');
 
 const Account = require('../models/Account');
@@ -16,6 +18,10 @@ router
   .get(advancedResults(Account), getAccounts)
   .post(createAccount);
 
-router.route('/:id').get(getAccount);
+router
+  .route('/:id')
+  .get(getAccount)
+  .put(editAccount)
+  .delete(deleteAccount);
 
 module.exports = router;

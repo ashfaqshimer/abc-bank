@@ -67,3 +67,12 @@ exports.editAccount = asyncHandler(async (req, res, next) => {
     data: account
   });
 });
+
+// @desc    Delete an account
+// @route   DELETE /api/v1/accounts/:id
+// @access  Admin
+exports.deleteAccount = asyncHandler(async (req, res, next) => {
+  await Account.findByIdAndDelete(req.params.id);
+
+  res.status(201).json({ success: true, data: {} });
+});
