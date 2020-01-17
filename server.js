@@ -23,6 +23,7 @@ connectDb();
 const accounts = require('./routes/accounts');
 const customers = require('./routes/customers');
 const auth = require('./routes/auth');
+const transactions = require('./routes/transactions');
 
 const app = express();
 
@@ -34,7 +35,7 @@ app.use(cookieParser());
 
 // Dev loggin middleware
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+	app.use(morgan('dev'));
 }
 
 // Sanitize data
@@ -47,6 +48,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/accounts', accounts);
 app.use('/api/v1/customers', customers);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/transactions', transactions);
 
 // Error handler
 app.use(errorHandler);
@@ -54,15 +56,16 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(
-  PORT,
-  console.log(
-    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
-  )
+	PORT,
+	console.log(
+		`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow
+			.bold
+	)
 );
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
-  console.error(`Error: ${err.message}`.red);
-  // Close server and exit process
-  server.close(() => process.exit(1));
+	console.error(`Error: ${err.message}`.red);
+	// Close server and exit process
+	server.close(() => process.exit(1));
 });

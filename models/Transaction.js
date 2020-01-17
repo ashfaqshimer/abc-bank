@@ -16,9 +16,10 @@ const TransactionSchema = new mongoose.Schema(
 			enum: ['ATM', 'POS', 'mobile', 'computer'],
 			required: [true, 'Source should be specified']
 		},
-		customerAccount: {
-			type: String,
-			required: [true, 'Customer account is required']
+		accountId: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Account',
+			required: [true, 'Customer account id is required']
 		}
 	},
 	{ timestamps: true }
