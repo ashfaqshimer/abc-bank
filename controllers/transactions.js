@@ -7,14 +7,44 @@ const Account = require('../models/Account');
 // @route   POST /api/v1/transactions
 // @access  Private/Admin
 exports.createTransaction = asyncHandler(async (req, res, next) => {
+	// Check if an account is specified
+	if (!req.body.account) {
+		return next(new ErrorResponse(`Account id is required`, 400));
+	}
+
+	// Check if the account id is valid
 	const account = await Account.findById(req.body.account);
-	console.log(account);
 
 	if (!account) {
 		return next(
 			new ErrorResponse(`No account with id ${req.body.account}`, 404)
 		);
 	}
+
+	const { amount, type } = req.body;
+
+	// Ensure that values match the type
+	if (type === 'credit' && amount < 0) {
+		return next(
+			new ErrorResponse(`Credits should be a positive value`, 400)
+		);
+	}
+	if (type === 'debit' && amount > 0) {
+		return next(
+			new ErrorResponse(`Debits should be a negative value`, 400)
+		);
+	}
+
+	// Ensure that the account has sufficient balance for the debit
+	if (type === 'debit' && account.accountBalance < amount * -1) {
+		return next(
+			new ErrorResponse(
+				`Account ${req.body.account} has insufficent funds to perform this transaction`,
+				403
+			)
+		);
+	}
+
 	const transaction = await Transaction.create(req.body);
 
 	res.status(201).json({

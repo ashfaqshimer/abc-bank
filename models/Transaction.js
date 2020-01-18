@@ -51,6 +51,10 @@ TransactionSchema.statics.getAccountBalance = async function(accountId) {
 
 // Call getAccountBalance after save
 TransactionSchema.post('save', function() {
+	if (this.type === 'debit') {
+		this.amount = this.amount * -1;
+	}
+
 	this.constructor.getAccountBalance(this.account);
 });
 
