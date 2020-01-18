@@ -16,13 +16,15 @@ const router = express.Router();
 
 router
 	.route('/')
-	.get(
-		protect,
-		authorize('admin'),
-		advancedResults(Transaction),
-		getTransactions
-	)
-	.post(protect, createTransaction);
+	// .get(
+	// 	protect,
+	// 	authorize('admin'),
+	// 	advancedResults(Transaction),
+	// 	getTransactions
+	// )
+	.get(advancedResults(Transaction), getTransactions)
+	// .post(protect, createTransaction);
+	.post(createTransaction);
 
 router
 	.route('/:id')
