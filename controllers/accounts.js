@@ -48,13 +48,16 @@ exports.getAccounts = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/accounts/:id
 // @access  Private/Admin
 exports.getAccount = asyncHandler(async (req, res, next) => {
+	if (!req.body.account) {
+		return next(new ErrorResponse(`Account id not specified`));
+	}
 	const account = await Account.findById(req.params.id);
 
 	if (!account) {
 		return next(new ErrorResponse(`Account ${req.params.id} not found`));
 	}
 
-	// Make sure the user is the bootcamp owner
+	// Make sure the user is the account owner
 	if (
 		account.customer.toString() !== req.user.customer &&
 		req.user.role !== 'admin'

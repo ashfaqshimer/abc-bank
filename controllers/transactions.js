@@ -7,6 +7,14 @@ const Account = require('../models/Account');
 // @route   POST /api/v1/transactions
 // @access  Private/Admin
 exports.createTransaction = asyncHandler(async (req, res, next) => {
+	const account = await Account.findById(req.body.account);
+	console.log(account);
+
+	if (!account) {
+		return next(
+			new ErrorResponse(`No account with id ${req.body.account}`, 404)
+		);
+	}
 	const transaction = await Transaction.create(req.body);
 
 	res.status(201).json({
