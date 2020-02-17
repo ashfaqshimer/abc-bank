@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUniversity } from '@fortawesome/free-solid-svg-icons';
 
 import './LandingPage.scss';
+import { Link } from 'react-router-dom';
 
 export default class LandingPage extends Component {
 	render() {
@@ -17,15 +18,15 @@ export default class LandingPage extends Component {
 								ABC Bank
 							</h3>
 							<nav className='nav nav-masthead justify-content-center'>
-								<a className='nav-link active' href='#'>
+								<Link className='nav-link active' to='/'>
 									Home
-								</a>
-								<a className='nav-link' href='#'>
+								</Link>
+								<Link className='nav-link' to='/register'>
 									Register
-								</a>
-								<a className='nav-link' href='#'>
+								</Link>
+								<Link className='nav-link' to='#'>
 									Sign In
-								</a>
+								</Link>
 							</nav>
 						</div>
 					</header>
@@ -41,9 +42,12 @@ export default class LandingPage extends Component {
 							touch with you.
 						</p>
 						<p className='lead'>
-							<a href='#' className='btn btn-lg btn-secondary'>
+							<Link
+								to='/register'
+								className='btn btn-lg btn-secondary'
+							>
 								Register
-							</a>
+							</Link>
 						</p>
 					</main>
 
